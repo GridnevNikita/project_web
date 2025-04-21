@@ -3,14 +3,26 @@ from masks import get_mask_card_number, get_mask_account
 
 def mask_account_card(input_string: str) -> str:
     """
-    Функция, которая принимает на вход данные о карте, счете и выводит с маскировкой
+    Функция, которая принимает на вход данные о карте,
+    счете и выводит с маскировкой
     """
     if "Счет" in input_string:
-        parts = input_string.split()
-        return f"Счет {get_mask_account(parts[-1])}"
+        account_part = input_string.split()
+        return f"Счет {get_mask_account(account_part[-1])}"
     else:
-        parts = input_string.split()
-        return f"{' '.join(parts[:-1])} {get_mask_card_number(parts[-1])}"
+        card_part = input_string.split()
+        return f"{' '.join(card_part[:-1])} " f"{get_mask_card_number(card_part[-1])}"
+
+
+def get_date(date_string: str) -> str:
+    """
+    Функция, которая принимает на вход данные о дате
+    и выводит в удобный формат
+    """
+    date_part = date_string.split("T")[0]
+    year, month, day = date_part.split("-")
+    result = f"{day}.{month}.{year}"
+    return result
 
 
 if __name__ == "__main__":
@@ -22,3 +34,4 @@ if __name__ == "__main__":
     print(mask_account_card("Visa Platinum 8990922113665229"))
     print(mask_account_card("Visa Gold 5999414228426353"))
     print(mask_account_card("Счет 73654108430135874305"))
+    print(get_date("2024-03-11T02:26:18.671407"))
