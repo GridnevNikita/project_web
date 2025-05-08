@@ -1,17 +1,33 @@
-def filter_by_state(data: list, state: str = "EXECUTED") -> list:
+def filter_by_state(data: list[dict], state: str = "EXECUTED") -> list[dict]:
     """
-    Функция принимает на вход список словарей и возвращает отфильтрованный список
-    по значению 'state'
+    Фильтрует список словарей по определенному состоянию транзакции.
+
+    Параметры:
+    data (list[dict]): список словарей с данными транзакций
+    state (str): значение состояния для фильтрации.
+    По умолчанию 'EXECUTED'.
+
+    Возвращает:
+    list[dict]: новый список словарей, содержащих только транзакции
+    с указанным состоянием.
     """
     return [i for i in data if i["state"] == state]
 
 
-def sort_by_date(data: list, reverse: bool = True) -> list:
+def sort_by_date(data: list[dict], reverse: bool = True) -> list[dict]:
     """
-    Функция принимает на вход список словарей и возвращает отсортированный список
-    по значению 'date' по убыванию
+    Сортирует список словарей по дате в формате ISO.
+
+    Параметры:
+    data (list[dict]): список словарей с данными транзакций
+    reverse (bool, optional): флаг сортировки.
+    True - сортировка по убыванию (по умолчанию),
+    False - сортировка по возрастанию.
+
+    Возвращает:
+    list[dict]: отсортированный список словарей.
     """
-    return [time for time in sorted(data, key=lambda x: x["date"], reverse=reverse)]
+    return sorted(data, key=lambda x: x.get("date"), reverse=reverse)
 
 
 if __name__ == "__main__":
