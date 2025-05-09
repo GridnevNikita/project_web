@@ -11,7 +11,7 @@ def filter_by_state(data: list[dict], state: str = "EXECUTED") -> list[dict]:
     list[dict]: новый список словарей, содержащих только транзакции
     с указанным состоянием.
     """
-    return [i for i in data if i["state"] == state]
+    return [i for i in data if i.get("state") == state]
 
 
 def sort_by_date(data: list[dict], reverse: bool = True) -> list[dict]:
