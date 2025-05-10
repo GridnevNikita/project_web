@@ -5,7 +5,7 @@ def get_mask_card_number(card_number: str) -> str:
     if not isinstance(card_number, str):
         raise TypeError("Номер карты должен быть строкой")
 
-    if card_number is "":
+    if card_number == "":
         raise ValueError("Номер карты не может быть пустым")
 
     if len(card_number) != 16:
@@ -25,7 +25,7 @@ def get_mask_account(account_number: str) -> str:
     if not isinstance(account_number, str):
         raise TypeError("Номер счёта должен быть строкой")
 
-    if account_number is "":
+    if account_number == "":
         raise ValueError("Номер счёта не может быть пустым")
 
     if len(account_number) != 20:
