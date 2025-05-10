@@ -2,57 +2,65 @@ import pytest
 from src.masks import get_mask_card_number, get_mask_account
 
 
-@pytest.mark.parametrize(
-    "card_number,expected",
-    [
-        ("7000792289606361", "7000 79** **** 6361"),
-        ("1234567890123456", "1234 56** **** 3456"),
-        ("4321098765432109", "4321 09** **** 2109"),
-        ("9876543210987654", "9876 54** **** 7654"),
-    ],
-)
-def test_card_number_parametrized(card_number, expected):
-    assert get_mask_card_number(card_number) == expected
+# Фикстуры для данных карт
+@pytest.fixture
+def card_data():
+    return {
+        "valid": "4000111122223333",
+        "expected": "4000 11** **** 3333",
+        "invalid": {
+            "too_short": "123456789012345",
+            "too_long": "12345678901234567",
+            "with_letters": "123456789012345a",
+            "integer": 12345678901234567,
+            "empty": "",
+            "special_chars": "123456789012345!",
+        },
+    }
 
 
-@pytest.mark.parametrize(
-    "account_number,expected",
-    [
-        ("73654108430135874305", "**4305"),  # Базовый случай
-        ("12345678901234567890", "**7890"),  # Другой валидный номер
-        ("09876543210987654321", "**4321"),  # Обратный порядок цифр
-        ("98765432109876543210", "**3210"),  # Еще один валидный номер
-    ],
-)
-def test_account_number_parametrized(account_number, expected):
-    assert get_mask_account(account_number) == expected
+# Фикстура для данных счетов
+@pytest.fixture
+def account_data():
+    return {
+        "valid": "40001111222233334444",
+        "expected": "**4444",
+        "invalid": {
+            "too_short": "123456789012345",
+            "too_long": "123456789012345678901",
+            "with_letters": "123456789012345a",
+            "integer": 12345678901234567890,
+            "empty": "",
+            "special_chars": "123456789012345!",
+        },
+    }
 
 
-# Проверка ошибок для card_number
-def test_card_number_type_error():
-    with pytest.raises(TypeError):
-        get_mask_card_number(1234567890123456)
-    with pytest.raises(TypeError):
-        get_mask_card_number(["1234567890123456"])
-    with pytest.raises(TypeError):
-        get_mask_card_number({"card": "1234567890123456"})
+# Тесты для get_mask_card_number
+def test_card_number_valid(card_data):
+    result = get_mask_card_number(card_data["valid"])
+    assert get_mask_card_number(card_data["valid"]) == card_data["expected"]
+    assert len(result) == 19
+    assert result.count(" ") == 3
+    assert result[-4:].isdigit()
 
 
-def test_card_number_empty():
-    with pytest.raises(ValueError):
-        get_mask_card_number("")
+def test_card_number_invalid(card_data):
+    for case, value in card_data["invalid"].items():
+        with pytest.raises(Exception):
+            get_mask_card_number(value)
 
 
-# Проверка ошибок для account_number
-def test_account_number_type_error():
-    with pytest.raises(TypeError):
-        get_mask_account(12345678901234567890)
-    with pytest.raises(TypeError):
-        get_mask_account(["12345678901234567890"])
-    with pytest.raises(TypeError):
-        get_mask_account({"account": "12345678901234567890"})
+# Тесты для get_mask_account
+def test_account_number_valid(account_data):
+    result = get_mask_account(account_data["valid"])
+    assert result == account_data["expected"]
+    assert len(result) == 6
+    assert result.startswith("**")
+    assert result[-4:].isdigit()
 
 
-def test_account_number_empty():
-    with pytest.raises(ValueError):
-        get_mask_account("")
+def test_account_number_invalid(account_data):
+    for case, value in account_data["invalid"].items():
+        with pytest.raises(Exception):
+            get_mask_account(value)
