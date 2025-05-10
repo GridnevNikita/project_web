@@ -11,7 +11,21 @@ def filter_by_state(data: list[dict], state: str = "EXECUTED") -> list[dict]:
     list[dict]: новый список словарей, содержащих только транзакции
     с указанным состоянием.
     """
-    return [i for i in data if i.get("state") == state]
+    # Добавляем проверку типа данных
+    if not isinstance(data, list):
+        raise TypeError("data должен быть списком словарей")
+
+    # Добавляем проверку наличия ключа state
+    filtered = []
+    for item in data:
+        if not isinstance(item, dict):
+            raise TypeError("Элементы data должны быть словарями")
+        if "state" not in item:
+            raise ValueError("В каждом словаре должен быть ключ 'state'")
+        if item["state"] == state:
+            filtered.append(item)
+
+    return filtered
 
 
 def sort_by_date(data: list[dict], reverse: bool = True) -> list[dict]:
@@ -27,6 +41,17 @@ def sort_by_date(data: list[dict], reverse: bool = True) -> list[dict]:
     Возвращает:
     list[dict]: отсортированный список словарей.
     """
+    # Добавляем проверку типа данных
+    if not isinstance(data, list):
+        raise TypeError("data должен быть списком словарей")
+
+    # Добавляем проверку наличия ключа date
+    for item in data:
+        if not isinstance(item, dict):
+            raise TypeError("Элементы data должны быть словарями")
+        if "date" not in item:
+            raise ValueError("В каждом словаре должен быть ключ 'date'")
+
     return sorted(data, key=lambda x: x.get("date"), reverse=reverse)
 
 
