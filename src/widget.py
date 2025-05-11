@@ -6,6 +6,15 @@ def mask_account_card(input_string: str) -> str:
     Функция, которая принимает на вход данные о карте,
     счете и выводит с маскировкой
     """
+    if not isinstance(input_string, str):
+        raise TypeError("Входные данные должны быть строкой")
+    if input_string == "":
+        raise ValueError("Входная строка не может быть пустой")
+
+        # Добавляем проверку формата
+    if "Счет" not in input_string and not any(x in input_string for x in ["Maestro", "Visa", "MasterCard"]):
+        raise ValueError("Неверный формат данных")
+
     if "Счет" in input_string:
         account_part = input_string.split()
         return f"Счет {get_mask_account(account_part[-1])}"
@@ -16,13 +25,24 @@ def mask_account_card(input_string: str) -> str:
 
 def get_date(date_string: str) -> str:
     """
-    Функция, которая принимает на вход данные о дате
-    и выводит в удобный формат
+    Функция форматирует дату из формата YYYY-MM-DD в DD.MM.YYYY
+    и проверяет корректность введенных данных
     """
-    date_part = date_string.split("T")[0]
-    year, month, day = date_part.split("-")
-    result = f"{day}.{month}.{year}"
-    return result
+    if not isinstance(date_string, str):
+        raise TypeError("Входные данные должны быть строкой")
+    if date_string == "":
+        raise ValueError("Входная строка не может быть пустой")
+
+    try:
+        date_part = date_string.split("T")[0]
+        parts = date_part.split("-")
+        year, month, day = parts
+        # Добавляем проверку формата даты
+        if len(parts) != 3:
+            raise ValueError("Неверный формат даты")
+        return f"{day}.{month}.{year}"
+    except ValueError:
+        raise ValueError("Неверный формат даты")
 
 
 if __name__ == "__main__":
@@ -33,5 +53,4 @@ if __name__ == "__main__":
     print(mask_account_card("Visa Classic 6831982476737658"))
     print(mask_account_card("Visa Platinum 8990922113665229"))
     print(mask_account_card("Visa Gold 5999414228426353"))
-    print(mask_account_card("Счет 73654108430135874305"))
     print(get_date("2024-03-11T02:26:18.671407"))
