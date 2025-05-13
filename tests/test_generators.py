@@ -1,6 +1,6 @@
 import pytest
 
-from src.generators import filter_by_currency, transaction_descriptions
+from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
 
 @pytest.fixture()
 def filter_test_transactions():
@@ -145,3 +145,26 @@ def test_empty_list():
     transactions = []
     descriptions = transaction_descriptions(transactions)
     assert list(descriptions) == []
+
+def test_card_number_generator():
+    # Базовый тест генерации последовательности
+    cards = list(card_number_generator(1, 5))
+    assert cards == [
+        "0000 0000 0000 0001",
+        "0000 0000 0000 0002",
+        "0000 0000 0000 0003",
+        "0000 0000 0000 0004",
+        "0000 0000 0000 0005"
+    ]
+
+    card = next(card_number_generator(1234567890123456, 1234567890123456))
+    assert card == "1234 5678 9012 3456"
+
+    with pytest.raises(ValueError):
+        list(card_number_generator(0, 10))
+
+    with pytest.raises(ValueError):
+        list(card_number_generator(10, 5))
+
+    with pytest.raises(ValueError):
+        list(card_number_generator(10000000000000000, 10000000000000001))

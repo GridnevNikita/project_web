@@ -82,7 +82,6 @@ def filter_by_currency(operations: list[dict], currency: str) -> iter:
     return (operation for operation in operations
             if operation.get('operationAmount', {}).get('currency', {}).get('code') == currency)
 
-
 def transaction_descriptions(operations: list[dict])-> iter:
     for operation in operations:
         if 'description' in operation:
@@ -90,6 +89,18 @@ def transaction_descriptions(operations: list[dict])-> iter:
         else:
             yield "Описание отсутствует"
 
+
+def card_number_generator(start: int, end: int) -> iter:
+    """
+    Генератор номеров банковских карт в формате XXXX XXXX XXXX XXXX
+    """
+    if not (1 <= start <= end <= 9999999999999999):
+        raise ValueError("Значения должны быть в диапазоне от 1 до 9999999999999999")
+
+    for number in range(start, end + 1):
+        formatted_number = f"{number:016d}"
+        # Добавляем пробелы каждые 4 символа
+        yield " ".join(formatted_number[i:i + 4] for i in range(0, 16, 4))
 
 if __name__ == "__main__":
     usd_transactions = filter_by_currency(transactions, "USD")
@@ -99,3 +110,6 @@ if __name__ == "__main__":
     descriptions = transaction_descriptions(transactions)
     for _ in range(5):
         print(next(descriptions))
+
+    for card_number in card_number_generator(1, 5):
+        print(card_number)
