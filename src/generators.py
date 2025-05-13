@@ -1,7 +1,3 @@
-def filter_by_currency(operations: list[dict], currency: str) -> iter:
-    return (operation for operation in operations
-            if operation.get('operationAmount', {}).get('currency', {}).get('code') == currency)
-
 transactions = (
         [
             {
@@ -82,8 +78,24 @@ transactions = (
         ]
     )
 
+def filter_by_currency(operations: list[dict], currency: str) -> iter:
+    return (operation for operation in operations
+            if operation.get('operationAmount', {}).get('currency', {}).get('code') == currency)
+
+
+def transaction_descriptions(operations: list[dict])-> iter:
+    for operation in operations:
+        if 'description' in operation:
+            yield operation['description']
+        else:
+            yield "Описание отсутствует"
+
 
 if __name__ == "__main__":
     usd_transactions = filter_by_currency(transactions, "USD")
     for _ in range(2):
         print(next(usd_transactions))
+
+    descriptions = transaction_descriptions(transactions)
+    for _ in range(5):
+        print(next(descriptions))
