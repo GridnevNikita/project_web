@@ -58,7 +58,7 @@ def sort_by_date(data: List[Dict], reverse: bool = True) -> List[Dict]:
 
     return sorted(
         data,
-        key=lambda x: datetime.strptime(x.get("date", "0001-01-01T00:00:00"), "%Y-%m-%dT%H:%M:%S.%f"),
+        key=lambda x: datetime.strptime(x.get("date", "0001-01-01T00:00:00"), "%Y-%m-%dT%H:%M:%S"),
         reverse=reverse,
     )
 
