@@ -1,3 +1,7 @@
+from datetime import datetime
+from typing import Dict, List
+
+
 def filter_by_state(data: list[dict], state: str = "EXECUTED") -> list[dict]:
     """
     Фильтрует список словарей по определенному состоянию транзакции.
@@ -28,7 +32,7 @@ def filter_by_state(data: list[dict], state: str = "EXECUTED") -> list[dict]:
     return filtered
 
 
-def sort_by_date(data: list[dict], reverse: bool = True) -> list[dict]:
+def sort_by_date(data: List[Dict], reverse: bool = True) -> List[Dict]:
     """
     Сортирует список словарей по дате в формате ISO.
 
@@ -52,7 +56,11 @@ def sort_by_date(data: list[dict], reverse: bool = True) -> list[dict]:
         if "date" not in item:
             raise ValueError("В каждом словаре должен быть ключ 'date'")
 
-    return sorted(data, key=lambda x: x.get("date"), reverse=reverse)
+    return sorted(
+        data,
+        key=lambda x: datetime.strptime(x.get("date", "0001-01-01T00:00:00"), "%Y-%m-%dT%H:%M:%S.%f"),
+        reverse=reverse,
+    )
 
 
 if __name__ == "__main__":
