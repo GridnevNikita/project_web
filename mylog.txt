@@ -1,0 +1,5 @@
+
+Start: 16.05.2025 21:07:03 my_function
+Finish: 16.05.2025 21:07:03 my_function ok
+Execution time: 0.00004 seconds
+Result: 3
