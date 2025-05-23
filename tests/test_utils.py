@@ -1,23 +1,28 @@
-from unittest import mock
 import json
+from unittest import mock
+
 from src.utils import load_json_file
 
-@mock.patch('builtins.open', side_effect=FileNotFoundError)
+
+@mock.patch("builtins.open", side_effect=FileNotFoundError)
 def test_file_not_found(mock_open):
-    result = load_json_file('fake_path.json')
+    result = load_json_file("fake_path.json")
     assert result == []
 
-@mock.patch('json.load', side_effect=json.JSONDecodeError("Expecting value", "", 0))
-@mock.patch('os.path.isfile', return_value=True)  # чтобы обойти проверку isfile
+
+@mock.patch("json.load", side_effect=json.JSONDecodeError("Expecting value", "", 0))
+@mock.patch("os.path.isfile", return_value=True)  # чтобы обойти проверку isfile
 def test_json_decode_error(mock_isfile, mock_json_load):
-    result = load_json_file('fake_path.json')
+    result = load_json_file("fake_path.json")
     assert result == []
 
-@mock.patch('json.load', return_value={"not": "a list"})
-@mock.patch('os.path.isfile', return_value=True)
+
+@mock.patch("json.load", return_value={"not": "a list"})
+@mock.patch("os.path.isfile", return_value=True)
 def test_not_a_list(mock_isfile, mock_json_load):
-    result = load_json_file('fake_path.json')
+    result = load_json_file("fake_path.json")
     assert result == []
+
 
 @mock.patch("os.path.isfile", return_value=True)
 @mock.patch("builtins.open", new_callable=mock.mock_open, read_data='[{"id": 1}, {"id": 2}]')

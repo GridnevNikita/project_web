@@ -1,7 +1,9 @@
 import os
+from typing import Dict
+
 import requests
 from dotenv import load_dotenv
-from typing import Dict
+
 from src.utils import load_json_file
 
 load_dotenv()
@@ -11,6 +13,9 @@ URL = "https://api.apilayer.com/exchangerates_data/latest"
 
 
 def convert_to_rubles(transaction: Dict) -> float:
+    """
+    Конвертирует сумму транзакции в рубли
+    """
     try:
         amount_str = transaction["operationAmount"]["amount"]
         currency_code = transaction["operationAmount"]["currency"]["code"]
@@ -31,8 +36,8 @@ def convert_to_rubles(transaction: Dict) -> float:
     try:
         response = requests.get(URL, headers=headers, params=params)
         response.raise_for_status()
-        data = response.json()
-        rate = data["rates"]["RUB"]
+        data: dict = response.json()
+        rate = float(data["rates"]["RUB"])
         return amount * rate
     except Exception as e:
         print(f"Ошибка API: {e}")
