@@ -5,7 +5,7 @@ logger = logging.getLogger("masks")
 logger.setLevel(logging.DEBUG)
 
 log_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "logs", "masks.log")
-file_handler = logging.FileHandler(log_path, encoding="utf-8")
+file_handler = logging.FileHandler(log_path, mode="w", encoding="utf-8")
 
 file_handler.setLevel(logging.DEBUG)
 file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
