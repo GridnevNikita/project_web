@@ -12,6 +12,8 @@ file_handler.setLevel(logging.DEBUG)
 file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
+
+
 def get_mask_card_number(card_number: str) -> str:
     """
     Функция принимает на вход номер карты и возвращает маскированный номер карты
