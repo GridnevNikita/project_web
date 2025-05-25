@@ -35,14 +35,16 @@ def log(filename: Optional[str] = None) -> Callable:
                     with open(filename, "a", encoding="utf-8") as file:
                         file.write(f"\nStart: {start_time.strftime('%d.%m.%Y %H:%M:%S')} {function.__name__}\n")
                         file.write(
-                            f"Finish: {finish_time.strftime('%d.%m.%Y %H:%M:%S')} {function.__name__} error: {type(e).__name__}\n"
+                            f"Finish: {finish_time.strftime('%d.%m.%Y %H:%M:%S')} "
+                            f"{function.__name__} error: {type(e).__name__}\n"
                         )
                         file.write(f"Execution time: {execution_time:.5f} seconds\n")
                         file.write(f"Inputs: {args}, {kwargs}\n")
                 else:
                     print(f"Start: {start_time.strftime('%d.%m.%Y %H:%M:%S')} {function.__name__}")
                     print(
-                        f"Finish: {finish_time.strftime('%d.%m.%Y %H:%M:%S')} {function.__name__} error: {type(e).__name__}"
+                        f"Finish: {finish_time.strftime('%d.%m.%Y %H:%M:%S')} "
+                        f"{function.__name__} error: {type(e).__name__}"
                     )
                     print(f"Execution time: {execution_time:.5f} seconds")
                     print(f"Inputs: {args}, {kwargs}")
