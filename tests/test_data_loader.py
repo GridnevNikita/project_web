@@ -1,5 +1,7 @@
-import pytest
 from unittest.mock import patch
+
+import pytest
+
 from src.data_loader import csv_transactions, excel_transactions
 
 
@@ -7,9 +9,7 @@ from src.data_loader import csv_transactions, excel_transactions
 @patch("src.data_loader.pd.read_csv")
 def test_csv_transactions(mock_read_csv, mock_isfile):
     mock_isfile.return_value = True
-    mock_read_csv.return_value.to_dict.return_value = [
-        {"amount": 100, "category": "Food"}
-    ]
+    mock_read_csv.return_value.to_dict.return_value = [{"amount": 100, "category": "Food"}]
 
     result = csv_transactions("file.csv")
     assert result == [{"amount": 100, "category": "Food"}]
@@ -45,9 +45,7 @@ def test_csv_transactions_read_error(mock_read_csv, mock_isfile):
 @patch("src.data_loader.pd.read_excel")
 def test_excel_transactions(mock_read_excel, mock_isfile):
     mock_isfile.return_value = True
-    mock_read_excel.return_value.to_dict.return_value = [
-        {"amount": 200, "category": "Transport"}
-    ]
+    mock_read_excel.return_value.to_dict.return_value = [{"amount": 200, "category": "Transport"}]
 
     result = excel_transactions("file.xlsx")
     assert result == [{"amount": 200, "category": "Transport"}]
