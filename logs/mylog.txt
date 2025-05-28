@@ -13,3 +13,8 @@ Start: 16.05.2025 23:24:28 my_function
 Finish: 16.05.2025 23:24:28 my_function ok
 Execution time: 0.00003 seconds
 Result: 3
+
+Start: 25.05.2025 19:11:14 my_function
+Finish: 25.05.2025 19:11:14 my_function ok
+Execution time: 0.00004 seconds
+Result: 3
