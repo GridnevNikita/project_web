@@ -52,6 +52,21 @@
 * Возвращает итератор с описаниями
 * Гарантирует наличие хотя бы базового описания для каждой операции
 
+### Модуль data_loader
+Содержит функции для загрузки транзакций из файлов:
+
+* **csv_transactions** — загружает данные из CSV-файла с разделителем `;` и кодировкой `utf-8`
+* **excel_transactions** — загружает данные из Excel-файлов формата `.xlsx`
+
+Примеры:
+
+```python
+from src.data_loader import csv_transactions, excel_transactions
+
+transactions = csv_transactions("../data/transactions.csv")
+transactions = excel_transactions("../data/transactions_excel.xlsx")
+```
+
 ## Tests
 
 ### Модуль test_masks 
@@ -92,3 +107,9 @@
 * Проверка базовой генерации последовательности
 * Тестирование форматирования номеров
 * Проверка обработки крайних значений
+### Модуль test_data_loader
+* Проверка загрузки данных из CSV и Excel файлов.
+* Проверка реакции на отсутствие файлов (`FileNotFoundError`).
+* Проверка обработки ошибок чтения файлов (`ValueError`).
+* Использование `unittest.mock.patch` для подмены `os.path.isfile`, `pandas.read_csv` и `pandas.read_excel`.
+* Проверка, что функции вызываются с ожидаемыми аргументами (`assert_called_once_with`).
