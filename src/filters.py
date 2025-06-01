@@ -1,6 +1,7 @@
 import re
 from collections import Counter
-from typing import List, Dict, Any
+from typing import Any, Dict, List
+
 
 def filter_by_description(my_transactions: List[Dict[str, Any]], keyword: str) -> List[Dict[str, Any]]:
     """
@@ -19,7 +20,7 @@ def count_by_category(my_transactions: List[Dict[str, Any]], my_categories: List
     Считает количество операций по заданным категориям (по полю 'description').
     Возвращает словарь {категория: количество}.
     """
-    counter = Counter()
+    counter: Counter[str] = Counter()
 
     for transaction in my_transactions:
         description = transaction.get("description", "").lower()

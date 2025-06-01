@@ -1,12 +1,12 @@
 import os
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
-from src.utils import load_json_file
 from src.data_loader import csv_transactions, excel_transactions
-from src.processing import filter_by_state, sort_by_date
-from src.generators import filter_by_currency
 from src.filters import filter_by_description
-from src.widget import mask_account_card, get_date
+from src.generators import filter_by_currency
+from src.processing import filter_by_state, sort_by_date
+from src.utils import load_json_file
+from src.widget import get_date, mask_account_card
 
 
 def main() -> None:
@@ -28,8 +28,7 @@ def main() -> None:
     В случае ошибок ввода или пустых данных информирует пользователя и корректно завершает работу.
     """
     # Приветствие и выбор источника
-    print("Программа: Привет! Добро пожаловать в программу работы "
-          "с банковскими транзакциями.")
+    print("Программа: Привет! Добро пожаловать в программу работы " "с банковскими транзакциями.")
     print("Программа: Выберите необходимый пункт меню:")
     print("1. Получить информацию о транзакциях из JSON-файла")
     print("2. Получить информацию о транзакциях из CSV-файла")
@@ -78,10 +77,11 @@ def main() -> None:
         sort_answer = input("Программа: Отсортировать операции по дате? Да/Нет\nПользователь: ").strip().lower()
         if sort_answer == "да":
             while True:
-                order = input(
-                    "Программа: Отсортировать по возрастанию или по убыванию?\nПользователь: ").strip().lower()
+                order = (
+                    input("Программа: Отсортировать по возрастанию или по убыванию?\nПользователь: ").strip().lower()
+                )
                 if order in ("возрастание", "убывание"):
-                    reverse = (order == "убывание")
+                    reverse = order == "убывание"
                     filtered = sort_by_date(filtered, reverse=reverse)
                     break
                 else:
@@ -105,9 +105,13 @@ def main() -> None:
 
     # Фильтрация по описанию с валидацией
     while True:
-        desc_answer = input(
-            "Программа: Отфильтровать список транзакций по определенному слову в описании? Да/Нет\nПользователь: "
-        ).strip().lower()
+        desc_answer = (
+            input(
+                "Программа: Отфильтровать список транзакций по определенному слову в описании? Да/Нет\nПользователь: "
+            )
+            .strip()
+            .lower()
+        )
         if desc_answer == "да":
             keyword = input("Программа: Введите слово:\nПользователь: ").strip()
             filtered = filter_by_description(filtered, keyword)

@@ -1,9 +1,10 @@
 import re
 from collections import Counter
-from typing import List, Dict, Any
+from typing import Any, Dict, List
+
 import pytest
 
-from src.filters import  filter_by_description, count_by_category
+from src.filters import count_by_category, filter_by_description
 
 test_transactions = [
     {
@@ -43,11 +44,13 @@ test_transactions = [
     },
 ]
 
+
 def test_filter_by_description():
     # Фильтрация по ключевому слову "перевод"
     filtered = filter_by_description(test_transactions, "перевод")
     assert len(filtered) == 3
     assert all("перевод" in tx["description"].lower() for tx in filtered)
+
 
 def test_count_by_category():
     categories = ["Перевод организации", "Перевод со счета на счет", "Открытие вклада", "Перевод с карты на карту"]
