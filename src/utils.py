@@ -30,8 +30,11 @@ def load_json_file(file_path: str) -> List[Any]:
         with open(file_path, "r", encoding="utf-8") as file:
             data = json.load(file)
             if isinstance(data, list):
-                logger.debug(f"Успешно загружен список из файла: {file_path}")
-                return data
+                filtered_data = [
+                    item for item in data if isinstance(item, dict) and "state" in item
+                ]
+                logger.debug(f"Загружено {len(filtered_data)} корректных записей из {len(data)} в файле: {file_path}")
+                return filtered_data
             else:
                 logger.warning(f"Файл не содержит список: {file_path}")
                 return []
