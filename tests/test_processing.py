@@ -1,13 +1,12 @@
-from datetime import datetime
+from typing import Any, Dict
 
 import pytest
 
 from src.processing import filter_by_state, sort_by_date
 
 
-# Фикстура для filter_by_state
 @pytest.fixture
-def filter_test_data():
+def filter_test_data() -> Dict[str, Any]:
     return {
         "valid_data": [
             {"id": 1, "state": "EXECUTED", "date": "2023-01-01"},
@@ -24,27 +23,26 @@ def filter_test_data():
     }
 
 
-# Фикстура для sort_by_date
 @pytest.fixture
-def sort_test_data():
+def sort_test_data() -> Dict[str, Any]:
     return {
         "valid_data": [
-            {"id": 1, "date": "2023-01-01T00:00:00"},
-            {"id": 2, "date": "2023-01-03T00:00:00"},
-            {"id": 3, "date": "2023-01-02T00:00:00"},
+            {"id": 1, "date": "2023-01-01T00:00:00.000000"},
+            {"id": 2, "date": "2023-01-03T00:00:00.000000"},
+            {"id": 3, "date": "2023-01-02T00:00:00.000000"},
         ],
         "expected_asc": [
-            {"id": 1, "date": "2023-01-01T00:00:00"},
-            {"id": 3, "date": "2023-01-02T00:00:00"},
-            {"id": 2, "date": "2023-01-03T00:00:00"},
+            {"id": 1, "date": "2023-01-01T00:00:00.000000"},
+            {"id": 3, "date": "2023-01-02T00:00:00.000000"},
+            {"id": 2, "date": "2023-01-03T00:00:00.000000"},
         ],
         "expected_desc": [
-            {"id": 2, "date": "2023-01-03T00:00:00"},
-            {"id": 3, "date": "2023-01-02T00:00:00"},
-            {"id": 1, "date": "2023-01-01T00:00:00"},
+            {"id": 2, "date": "2023-01-03T00:00:00.000000"},
+            {"id": 3, "date": "2023-01-02T00:00:00.000000"},
+            {"id": 1, "date": "2023-01-01T00:00:00.000000"},
         ],
         "invalid_data_type": "string",
-        "missing_key_data": [{"id": 1}, {"date": "2023-01-01"}],
+        "missing_key_data": [{"id": 1}, {"date": "2023-01-01T00:00:00.000000"}],
     }
 
 
@@ -68,17 +66,10 @@ def test_filter_by_state_missing_key(filter_test_data):
 def test_sort_by_date_valid(sort_test_data):
     result = sort_by_date(sort_test_data["valid_data"], reverse=False)
 
-    # Проверяем каждую позицию отдельно
-    assert len(result) == len(sort_test_data["expected_asc"])
-    for i in range(len(result)):
-        assert result[i]["date"] == sort_test_data["expected_asc"][i]["date"]
-        assert result[i]["id"] == sort_test_data["expected_asc"][i]["id"]
+    assert result == sort_test_data["expected_asc"]
 
     result = sort_by_date(sort_test_data["valid_data"])
-    assert len(result) == len(sort_test_data["expected_desc"])
-    for i in range(len(result)):
-        assert result[i]["date"] == sort_test_data["expected_desc"][i]["date"]
-        assert result[i]["id"] == sort_test_data["expected_desc"][i]["id"]
+    assert result == sort_test_data["expected_desc"]
 
 
 def test_sort_by_date_invalid_type(sort_test_data):
